@@ -4,7 +4,7 @@ Bem-vindo ao projeto Qibz API!
 
 ## Descrição
 
-A Qibz API é uma API RESTful desenvolvida para fornecer recursos e funcionalidades para o aplicativo Qibz. O aplicativo Qibz é uma plataforma de gerenciamento de empresas, cálculo de impostos e transmissão de declarações fiscais integrado com a Receita Federal do Brasil através da API Integra Contador e eSocial.
+A Qibz API é uma API RESTful desenvolvida para fornecer recursos e funcionalidades para o app.Qibz. O app.Qibz é uma plataforma de gerenciamento de empresas, cálculo de impostos e transmissão de declarações fiscais integrado com a Receita Federal do Brasil através da API Integra Contador e eSocial.
 
 ## Recursos
 
@@ -13,6 +13,9 @@ A API Qibz oferece os seguintes recursos:
 - Autenticação de usuários
 - Gerenciamento de perfis de usuário
 - Gerenciamento de perfis de sócios e empresas
+- Cálculo e transmissão de declarações fiscais para a Receita Federal
+- Cálculo de folha de pagamento e transmissão de eventos para o eSocial
+- Emissão de boletos para pagamento de impostos
 
 ## Instalação
 
