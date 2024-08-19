@@ -12,6 +12,8 @@ import { getUser } from "./routes/get-user"
 import { createMember } from "./routes/create-member"
 import { getMember } from "./routes/get-member"
 import fastifyJwt from "@fastify/jwt"
+import { authenticate } from "./routes/authenticate"
+import { createCompany } from "./routes/create-company"
 
 const app = fastify()
 
@@ -29,6 +31,8 @@ app.register(createUser)
 app.register(getUser)
 app.register(createMember)
 app.register(getMember)
+app.register(authenticate)
+app.register(createCompany)
 
 app.listen({ port: env.PORT }).then(() => {
   console.log(`Server running on http://localhost:${env.PORT}/`)
