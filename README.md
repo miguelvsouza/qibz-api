@@ -20,7 +20,7 @@ Para começar a usar a Qibz API, siga estas etapas:
 
 1. Clone este repositório em sua máquina local.
 2. Instale as dependências executando o comando `npm i`.
-3. Configure as variáveis de ambiente necessárias no arquivo .env na raiz do projeto. Utilize como base o arquivo .env.example.
+3. Configure as variáveis de ambiente necessárias no arquivo `.env` na raiz do projeto. Utilize como base o arquivo `.env.example`.
 4. Execute o comando `npx prisma migrate dev` para realizar as migrações do banco de dados.
 5. Execute o comando `npm run seed` para popular o banco de dados.
 6. Execute o comando `npm run dev` para iniciar o servidor.
