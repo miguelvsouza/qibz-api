@@ -6,8 +6,7 @@
     "dev": "tsx watch --env-file .env src/server.ts",
     "seed": "tsx prisma/seed.ts"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Miguel Souza | Qibz",
   "license": "ISC",
   "description": "",
   "devDependencies": {
