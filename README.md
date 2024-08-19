@@ -28,10 +28,6 @@ Para começar a usar a Qibz API, siga estas etapas:
 5. Execute o comando `npm run seed` para popular o banco de dados.
 6. Execute o comando `npm run dev` para iniciar o servidor.
 
-## Documentação
-
-A documentação completa da API pode ser encontrada em [link para a documentação](https://www.qibz.com.br)
-
 ## Contato
 
 Se você tiver alguma dúvida ou sugestão, entre em contato conosco pelo email [dev@qibz.com.br](mailto:dev@qibz.com.br).
