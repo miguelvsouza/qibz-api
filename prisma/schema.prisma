@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  nickname  String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  member Member?
+
+  @@map("users")
+}
+
+model Member {
+  id         String   @id @default(cuid())
+  userId     String   @unique @map("user_id")
+  fullName   String   @map("full_name")
+  document   String   @unique
+  address    String
+  number     String
+  complement String
+  district   String
+  cityId     Int      @map("city_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  user      User               @relation(fields: [userId], references: [id])
+  cities    City               @relation(fields: [cityId], references: [id])
+  companies MembersOfCompany[]
+
+  @@map("members")
+}
+
+model Company {
+  id           String   @id @default(cuid())
+  name         String
+  document     String
+  shareCapital Float    @map("share_capital")
+  address      String
+  number       String
+  complement   String
+  district     String
+  cityId       Int      @map("city_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  cities  City               @relation(fields: [cityId], references: [id])
+  members MembersOfCompany[]
+
+  @@map("companies")
+}
+
+model MembersOfCompany {
+  id                 String   @id @default(cuid())
+  memberId           String   @map("member_id")
+  companyId          String   @map("company_id")
+  memberShareCapital Float    @map("member_share_capital")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+
+  companies Company @relation(fields: [companyId], references: [id])
+  members   Member  @relation(fields: [memberId], references: [id])
+
+  @@map("members_of_companies")
+}
+
+model City {
+  id        Int      @id
+  name      String
+  state     String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  companies Company[]
+  members   Member[]
+
+  @@map("cities")
+}
