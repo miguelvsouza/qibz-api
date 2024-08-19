@@ -27,7 +27,7 @@ Para começar a usar a Qibz API, siga estas etapas:
 
 ## Documentação
 
-A documentação completa da API pode ser encontrada em [link para a documentação](www.qibz.com.br)
+A documentação completa da API pode ser encontrada em [link para a documentação](https://www.qibz.com.br)
 
 ## Contato
 
