@@ -8,7 +8,7 @@ import { errorHandler } from "./error-handler"
 
 // Import the routes
 import { createUser } from "./routes/create-user"
-import { getUser } from "./routes/get-user"
+import { profile } from "./routes/profile"
 import { createMember } from "./routes/create-member"
 import { getMember } from "./routes/get-member"
 import fastifyJwt from "@fastify/jwt"
@@ -28,7 +28,7 @@ app.setSerializerCompiler(serializerCompiler)
 
 // Register the routes
 app.register(createUser)
-app.register(getUser)
+app.register(profile)
 app.register(createMember)
 app.register(getMember)
 app.register(authenticate)
