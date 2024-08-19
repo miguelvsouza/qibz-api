@@ -27,11 +27,14 @@ app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)
 
 // Register the routes
+/// Public routes
 app.register(createUser)
+app.register(authenticate)
+
+/// Private routes
 app.register(profile)
 app.register(createMember)
 app.register(getMember)
-app.register(authenticate)
 app.register(createCompany)
 
 app.listen({ port: env.PORT }).then(() => {

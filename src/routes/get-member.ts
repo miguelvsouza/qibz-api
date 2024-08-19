@@ -3,6 +3,7 @@ import { ZodTypeProvider } from "fastify-type-provider-zod"
 import { z } from "zod"
 import { prisma } from "../lib/prisma"
 import { ClientError } from "../errors/client-error"
+import { verifyJwt } from "../middlewares/verify-jwt"
 
 export async function getMember(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().get(
@@ -13,6 +14,7 @@ export async function getMember(app: FastifyInstance) {
           memberId: z.string().cuid(),
         }),
       },
+      onRequest: [verifyJwt],
     },
     async (request) => {
       const { memberId } = request.params

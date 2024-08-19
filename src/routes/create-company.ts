@@ -3,6 +3,7 @@ import { ZodTypeProvider } from "fastify-type-provider-zod"
 import { z } from "zod"
 import { prisma } from "../lib/prisma"
 import { ClientError } from "../errors/client-error"
+import { verifyJwt } from "../middlewares/verify-jwt"
 
 // The creation of a company is linked to a member previously created in the members table.
 export async function createCompany(app: FastifyInstance) {
@@ -28,6 +29,7 @@ export async function createCompany(app: FastifyInstance) {
           cityId: z.number(),
         }),
       },
+      onRequest: [verifyJwt],
     },
     async (request, reply) => {
       const {
