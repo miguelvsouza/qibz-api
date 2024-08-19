@@ -11,8 +11,13 @@ import { createUser } from "./routes/create-user"
 import { getUser } from "./routes/get-user"
 import { createMember } from "./routes/create-member"
 import { getMember } from "./routes/get-member"
+import fastifyJwt from "@fastify/jwt"
 
 const app = fastify()
+
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
+})
 
 // Set the error handler, validator compiler, and serializer compiler
 app.setErrorHandler(errorHandler)

@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 import { ZodTypeProvider } from "fastify-type-provider-zod"
 import { z } from "zod"
-import bcrypt from "bcrypt"
+import { hash } from "../lib/bcrypt"
 import { prisma } from "../lib/prisma"
 
 export async function createUser(app: FastifyInstance) {
@@ -23,7 +23,7 @@ export async function createUser(app: FastifyInstance) {
     async (request, reply) => {
       const { nickname, email, password } = request.body
 
-      const hashedPassword = await bcrypt.hash(password, 10)
+      const hashedPassword = await hash(password)
 
       const user = await prisma.user.create({
         data: {
