@@ -42,6 +42,7 @@ export async function authenticate(app: FastifyInstance) {
         {
           sign: {
             sub: user.id,
+            expiresIn: "7d",
           },
         }
       )
