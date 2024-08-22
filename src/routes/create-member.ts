@@ -42,6 +42,16 @@ export async function createMember(app: FastifyInstance) {
         throw new ClientError("Invalid document format.")
       }
 
+      const isMemberAlreadyCreated = await prisma.member.findFirst({
+        where: {
+          document,
+        },
+      })
+
+      if (isMemberAlreadyCreated) {
+        throw new ClientError("Member already created.")
+      }
+
       const member = await prisma.member.create({
         data: {
           userId,
