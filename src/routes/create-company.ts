@@ -18,9 +18,7 @@ export async function createCompany(app: FastifyInstance) {
             legallyResponsible: z.boolean(),
           }),
           name: z.string(),
-          document: z.string().length(18, {
-            message: "Document must have 18 characters (CNPJ format)",
-          }),
+          document: z.string(),
           shareCapital: z.number().positive(),
           address: z.string(),
           number: z.string(),
@@ -45,8 +43,10 @@ export async function createCompany(app: FastifyInstance) {
       } = request.body
 
       // Validate document format
-      if (!/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(document)) {
-        throw new ClientError("Invalid document format.")
+      if (!/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/.test(document)) {
+        throw new ClientError(
+          "Invalid document format. Must be in CNPJ format (00.000.000/0000-00)."
+        )
       }
 
       const company = await prisma.company.create({
