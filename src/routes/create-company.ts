@@ -49,6 +49,17 @@ export async function createCompany(app: FastifyInstance) {
         )
       }
 
+      const isCompanyAlreadyCreated = await prisma.company.findFirst({
+        where: {
+          document,
+        },
+      })
+
+      // Check if the company already exists
+      if (isCompanyAlreadyCreated) {
+        throw new ClientError("Company already created.")
+      }
+
       const company = await prisma.company.create({
         data: {
           name,

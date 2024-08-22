@@ -3,12 +3,19 @@ import bcrypt from "bcrypt"
 
 async function seed() {
   // Create a city
-  await prisma.city.create({
-    data: {
-      id: 3509502,
-      name: "Campinas",
-      state: "SP",
-    },
+  await prisma.city.createMany({
+    data: [
+      {
+        id: 3509502,
+        name: "Campinas",
+        state: "SP",
+      },
+      {
+        id: 3550308,
+        name: "São Paulo",
+        state: "SP",
+      },
+    ],
   })
 
   // Hash the password
