@@ -69,6 +69,40 @@ async function seed() {
       memberShareCapital: 10000,
     },
   })
+
+  // Create a invoice recipient (company)
+  await prisma.invoiceRecipient.create({
+    data: {
+      id: "cm06qyo5b000008mfcsl0fddi",
+      name: "Acme Inc",
+      isCompany: true,
+      document: "00.000.000/0000-00",
+      municipalRegistration: "000000",
+      stateRegistration: "000000",
+      address: "123 Main St",
+      number: "123",
+      complement: "Apt 123",
+      district: "Downtown",
+      cityId: 3509502, // Use the city created above (Campinas - SP)
+    },
+  })
+
+  // Create a invoice recipient (person)
+  await prisma.invoiceRecipient.create({
+    data: {
+      id: "cm06r114f000308mf6d538oml",
+      name: "John Doe",
+      isCompany: false,
+      document: "000.000.000-00",
+      municipalRegistration: "000000",
+      stateRegistration: "000000",
+      address: "123 Main St",
+      number: "123",
+      complement: "Apt 123",
+      district: "Downtown",
+      cityId: 3509502, // Use the city created above (Campinas - SP)
+    },
+  })
 }
 
 // Run the seed function
