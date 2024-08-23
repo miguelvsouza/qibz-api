@@ -43,7 +43,7 @@ model Member {
 model Company {
   id           String   @id @default(cuid())
   name         String
-  document     String
+  document     String   @unique
   shareCapital Float    @map("share_capital")
   address      String
   number       String
@@ -92,7 +92,7 @@ model InvoiceRecipient {
   id                    String   @id @default(cuid())
   name                  String
   isCompany             Boolean  @map("is_company")
-  document              String
+  document              String   @unique
   municipalRegistration String?  @map("municipal_registration")
   stateRegistration     String?  @map("state_registration")
   address               String
