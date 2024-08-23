@@ -70,6 +70,15 @@ async function seed() {
     },
   })
 
+  // Create a tax regime
+  await prisma.companyTaxRegime.create({
+    data: {
+      companyId: "cm00cnpx2000108ldevfv2khy",
+      regime: 1, // Simples Nacional
+      initialDate: new Date("2024-08-01"),
+    },
+  })
+
   // Create a invoice recipient (company)
   await prisma.invoiceRecipient.create({
     data: {

@@ -3,6 +3,7 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from "fastify-type-provider-zod"
+import fastifyJwt from "@fastify/jwt"
 import { env } from "./env"
 import { errorHandler } from "./error-handler"
 
@@ -11,7 +12,6 @@ import { createUser } from "./routes/create-user"
 import { profile } from "./routes/profile"
 import { createMember } from "./routes/create-member"
 import { getMember } from "./routes/get-member"
-import fastifyJwt from "@fastify/jwt"
 import { authenticate } from "./routes/authenticate"
 import { createCompany } from "./routes/create-company"
 import { createInvoiceRecipient } from "./routes/create-invoice-recipient"

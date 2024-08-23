@@ -17,6 +17,10 @@ export async function createCompany(app: FastifyInstance) {
             memberShareCapital: z.number().positive(),
             legallyResponsible: z.boolean(),
           }),
+          taxRegime: z.object({
+            regime: z.number().int().min(1).max(3), // 1 - Simples Nacional, 2 - Lucro Presumido, 3 - Lucro Real
+            initialDate: z.coerce.date(),
+          }),
           name: z.string(),
           document: z.string(),
           shareCapital: z.number().positive(),
@@ -32,6 +36,7 @@ export async function createCompany(app: FastifyInstance) {
     async (request, reply) => {
       const {
         member: { memberId, memberShareCapital, legallyResponsible },
+        taxRegime: { regime, initialDate },
         name,
         document,
         shareCapital,
@@ -49,13 +54,24 @@ export async function createCompany(app: FastifyInstance) {
         )
       }
 
+      // Check if the member exists
+      const member = await prisma.member.findUnique({
+        where: {
+          id: memberId,
+        },
+      })
+
+      if (!member) {
+        throw new ClientError("Member not found.")
+      }
+
+      // Check if the company already exists
       const isCompanyAlreadyCreated = await prisma.company.findFirst({
         where: {
           document,
         },
       })
 
-      // Check if the company already exists
       if (isCompanyAlreadyCreated) {
         throw new ClientError("Company already created.")
       }
@@ -75,6 +91,12 @@ export async function createCompany(app: FastifyInstance) {
               memberId,
               memberShareCapital,
               legallyResponsible,
+            },
+          },
+          taxRegimes: {
+            create: {
+              regime,
+              initialDate,
             },
           },
         },

@@ -53,10 +53,25 @@ model Company {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  cities  City               @relation(fields: [cityId], references: [id])
-  members MembersOfCompany[]
+  cities     City               @relation(fields: [cityId], references: [id])
+  members    MembersOfCompany[]
+  taxRegimes CompanyTaxRegime[]
 
   @@map("companies")
+}
+
+model CompanyTaxRegime {
+  id          String    @id @default(cuid())
+  companyId   String    @map("company_id")
+  regime      Int // 1 - Simples Nacional, 2 - Lucro Presumido, 3 - Lucro Real
+  initialDate DateTime  @map("initial_date")
+  finalDate   DateTime? @map("final_date")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  company Company @relation(fields: [companyId], references: [id])
+
+  @@map("company_tax_regimes")
 }
 
 model MembersOfCompany {
