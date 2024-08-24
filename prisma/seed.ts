@@ -1,5 +1,5 @@
 import { prisma } from "../src/lib/prisma"
-import bcrypt from "bcrypt"
+import { hash } from "../src/lib/bcrypt"
 
 async function seed() {
   // Create a city
@@ -19,7 +19,7 @@ async function seed() {
   })
 
   // Hash the password
-  const hashedPassword = await bcrypt.hash("john.doe", 10)
+  const hashedPassword = await hash("john.doe")
 
   // Create a user
   await prisma.user.create({
@@ -52,6 +52,7 @@ async function seed() {
       id: "cm00cnpx2000108ldevfv2khy",
       name: "Acme Inc",
       document: "00.000.000/0000-00",
+      creationDate: new Date("2020-08-01"),
       shareCapital: 10000,
       address: "123 Main St",
       number: "123",
@@ -85,6 +86,7 @@ async function seed() {
       id: "cm06qyo5b000008mfcsl0fddi",
       name: "Acme Inc",
       isCompany: true,
+      creationDate: new Date("2020-08-01"),
       document: "00.000.000/0000-00",
       municipalRegistration: "000000",
       stateRegistration: "000000",
@@ -110,6 +112,25 @@ async function seed() {
       complement: "Apt 123",
       district: "Downtown",
       cityId: 3509502, // Use the city created above (Campinas - SP)
+    },
+  })
+
+  // Create a invoice
+  await prisma.invoice.create({
+    data: {
+      companyId: "cm00cnpx2000108ldevfv2khy",
+      memberId: "cm00cr2d3000208ld5rlgammh",
+      recipientId: "cm06qyo5b000008mfcsl0fddi",
+      invoiceNumber: "1",
+      issueDate: new Date("2024-08-01"),
+      amount: 1000,
+      decuctIss: false,
+      iss: 30,
+      ir: 0,
+      csll: 0,
+      cofins: 0,
+      pis: 0,
+      inss: 0,
     },
   })
 }

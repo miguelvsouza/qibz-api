@@ -4,6 +4,7 @@ import { z } from "zod"
 import { prisma } from "../lib/prisma"
 import { ClientError } from "../errors/client-error"
 import { verifyJwt } from "../middlewares/verify-jwt"
+import { dayjs } from "../lib/dayjs"
 
 // The creation of a company is linked to a member previously created in the members table.
 export async function createCompany(app: FastifyInstance) {
@@ -23,6 +24,7 @@ export async function createCompany(app: FastifyInstance) {
           }),
           name: z.string(),
           document: z.string(),
+          creationDate: z.coerce.date(),
           shareCapital: z.number().positive(),
           address: z.string(),
           number: z.string(),
@@ -39,6 +41,7 @@ export async function createCompany(app: FastifyInstance) {
         taxRegime: { regime, initialDate },
         name,
         document,
+        creationDate,
         shareCapital,
         address,
         number,
@@ -51,6 +54,18 @@ export async function createCompany(app: FastifyInstance) {
       if (!/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/.test(document)) {
         throw new ClientError(
           "Invalid document format. Must be in CNPJ format (00.000.000/0000-00)."
+        )
+      }
+
+      // Check if creationDate is in the future
+      if (dayjs(creationDate).isAfter(dayjs())) {
+        throw new ClientError("Creation date cannot be in the future.")
+      }
+
+      // Check if initialDate is different from creationDate
+      if (!dayjs(initialDate).isSame(dayjs(creationDate))) {
+        throw new ClientError(
+          "Initial date must be the same as the creation date."
         )
       }
 
@@ -80,6 +95,7 @@ export async function createCompany(app: FastifyInstance) {
         data: {
           name,
           document,
+          creationDate,
           shareCapital,
           address,
           number,

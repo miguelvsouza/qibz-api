@@ -4,6 +4,7 @@ import { z } from "zod"
 import { prisma } from "../lib/prisma"
 import { ClientError } from "../errors/client-error"
 import { verifyJwt } from "../middlewares/verify-jwt"
+import { dayjs } from "../lib/dayjs"
 
 // The creation of a company is linked to a member previously created in the members table.
 export async function createInvoiceRecipient(app: FastifyInstance) {
@@ -15,6 +16,7 @@ export async function createInvoiceRecipient(app: FastifyInstance) {
           name: z.string(),
           isCompany: z.boolean(),
           document: z.string(),
+          creationDate: z.coerce.date().optional(),
           municipalRegistration: z.string().optional(),
           stateRegistration: z.string().optional(),
           address: z.string(),
@@ -31,6 +33,7 @@ export async function createInvoiceRecipient(app: FastifyInstance) {
         name,
         isCompany,
         document,
+        creationDate,
         municipalRegistration,
         stateRegistration,
         address,
@@ -54,6 +57,16 @@ export async function createInvoiceRecipient(app: FastifyInstance) {
         )
       }
 
+      // Check if creationDate is required for companies
+      if (isCompany && !creationDate) {
+        throw new ClientError("Creation date is required for companies.")
+      }
+
+      // Check if creationDate is in the future
+      if (isCompany && creationDate && dayjs(creationDate).isAfter(dayjs())) {
+        throw new ClientError("Creation date cannot be in the future.")
+      }
+
       const isInvoiceRecipientAlreadyCreated =
         await prisma.invoiceRecipient.findFirst({
           where: {
@@ -71,6 +84,7 @@ export async function createInvoiceRecipient(app: FastifyInstance) {
           name,
           isCompany,
           document,
+          creationDate,
           municipalRegistration,
           stateRegistration,
           address,

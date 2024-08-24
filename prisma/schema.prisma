@@ -36,6 +36,7 @@ model Member {
   user      User               @relation(fields: [userId], references: [id])
   cities    City               @relation(fields: [cityId], references: [id])
   companies MembersOfCompany[]
+  invoices  Invoice[]
 
   @@map("members")
 }
@@ -44,6 +45,7 @@ model Company {
   id           String   @id @default(cuid())
   name         String
   document     String   @unique
+  creationDate DateTime @map("creation_date")
   shareCapital Float    @map("share_capital")
   address      String
   number       String
@@ -56,6 +58,7 @@ model Company {
   cities     City               @relation(fields: [cityId], references: [id])
   members    MembersOfCompany[]
   taxRegimes CompanyTaxRegime[]
+  invoices   Invoice[]
 
   @@map("companies")
 }
@@ -104,21 +107,46 @@ model City {
 }
 
 model InvoiceRecipient {
-  id                    String   @id @default(cuid())
+  id                    String    @id @default(cuid())
   name                  String
-  isCompany             Boolean  @map("is_company")
-  document              String   @unique
-  municipalRegistration String?  @map("municipal_registration")
-  stateRegistration     String?  @map("state_registration")
+  isCompany             Boolean   @map("is_company")
+  document              String    @unique
+  creationDate          DateTime? @map("creation_date")
+  municipalRegistration String?   @map("municipal_registration")
+  stateRegistration     String?   @map("state_registration")
   address               String
   number                String
   complement            String
   district              String
-  cityId                Int      @map("city_id")
-  createdAt             DateTime @default(now()) @map("created_at")
-  updatedAt             DateTime @updatedAt @map("updated_at")
+  cityId                Int       @map("city_id")
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
 
-  cities City @relation(fields: [cityId], references: [id])
+  cities   City      @relation(fields: [cityId], references: [id])
+  invoices Invoice[]
 
   @@map("invoice_recipients")
+}
+
+model Invoice {
+  id            String   @id @default(cuid())
+  companyId     String   @map("company_id")
+  memberId      String   @map("member_id")
+  recipientId   String   @map("recipient_id")
+  invoiceNumber String   @map("invoice_number")
+  issueDate     DateTime @map("issue_date")
+  amount        Float
+  decuctIss     Boolean  @map("deduct_iss")
+  iss           Float
+  ir            Float
+  csll          Float
+  cofins        Float
+  pis           Float
+  inss          Float
+
+  company   Company          @relation(fields: [companyId], references: [id])
+  member    Member           @relation(fields: [memberId], references: [id])
+  recipient InvoiceRecipient @relation(fields: [recipientId], references: [id])
+
+  @@map("invoices")
 }
