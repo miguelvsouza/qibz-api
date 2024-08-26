@@ -133,6 +133,7 @@ model Invoice {
   companyId     String   @map("company_id")
   memberId      String   @map("member_id")
   recipientId   String   @map("recipient_id")
+  status        String
   invoiceNumber String   @map("invoice_number")
   issueDate     DateTime @map("issue_date")
   amount        Float
