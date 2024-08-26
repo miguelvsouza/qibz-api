@@ -143,6 +143,8 @@ model Invoice {
   cofins        Float
   pis           Float
   inss          Float
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
 
   company   Company          @relation(fields: [companyId], references: [id])
   member    Member           @relation(fields: [memberId], references: [id])
