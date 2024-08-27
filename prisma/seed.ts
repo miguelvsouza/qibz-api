@@ -121,6 +121,7 @@ async function seed() {
       companyId: "cm00cnpx2000108ldevfv2khy",
       memberId: "cm00cr2d3000208ld5rlgammh",
       recipientId: "cm06qyo5b000008mfcsl0fddi",
+      status: "active",
       invoiceNumber: "1",
       issueDate: new Date("2024-08-01"),
       amount: 1000,
