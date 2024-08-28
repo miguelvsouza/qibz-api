@@ -31,6 +31,9 @@ export async function createCompany(app: FastifyInstance) {
           complement: z.string(),
           district: z.string(),
           cityId: z.number(),
+          cnaeCode: z.string().regex(/^\d{4}-\d{1}\/\d{2}$/, {
+            message: "Invalid CNAE format. Must be in format 0000-0/00.",
+          }),
         }),
       },
       onRequest: [verifyJwt],
@@ -48,6 +51,7 @@ export async function createCompany(app: FastifyInstance) {
         complement,
         district,
         cityId,
+        cnaeCode,
       } = request.body
 
       // Validate document format
@@ -102,6 +106,7 @@ export async function createCompany(app: FastifyInstance) {
           complement,
           district,
           cityId,
+          cnaeCode,
           members: {
             create: {
               memberId,
