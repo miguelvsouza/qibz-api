@@ -51,6 +51,7 @@ model Company {
   number       String
   complement   String
   district     String
+  cnaeId       String   @map("cnae_id")
   cityId       Int      @map("city_id")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
@@ -59,6 +60,7 @@ model Company {
   members    MembersOfCompany[]
   taxRegimes CompanyTaxRegime[]
   invoices   Invoice[]
+  cnae       Cnae               @relation(fields: [cnaeId], references: [id])
 
   @@map("companies")
 }
@@ -136,6 +138,7 @@ model Invoice {
   status        String
   invoiceNumber String   @map("invoice_number")
   issueDate     DateTime @map("issue_date")
+  cnaeId        String   @map("cnae_id")
   amount        Float
   decuctIss     Boolean  @map("deduct_iss")
   iss           Float
@@ -150,6 +153,21 @@ model Invoice {
   company   Company          @relation(fields: [companyId], references: [id])
   member    Member           @relation(fields: [memberId], references: [id])
   recipient InvoiceRecipient @relation(fields: [recipientId], references: [id])
+  cnae      Cnae             @relation(fields: [cnaeId], references: [id])
 
   @@map("invoices")
+}
+
+model Cnae {
+  id        String   @id
+  title     String
+  lc116     String
+  group     Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  companies Company[]
+  invoices  Invoice[]
+
+  @@map("cnaes")
 }
