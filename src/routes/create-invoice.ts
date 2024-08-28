@@ -18,6 +18,9 @@ export async function createInvoice(app: FastifyInstance) {
           status: z.enum(["active", "canceled"]),
           invoiceNumber: z.string(),
           issueDate: z.coerce.date(),
+          cnaeCode: z.string().regex(/^\d{4}-\d{1}\/\d{2}$/, {
+            message: "Invalid CNAE format. Must be in format 0000-0/00.",
+          }),
           amount: z.number(),
           decuctIss: z.boolean(),
           iss: z.number(),
@@ -38,6 +41,7 @@ export async function createInvoice(app: FastifyInstance) {
         status,
         invoiceNumber,
         issueDate,
+        cnaeCode,
         amount,
         decuctIss,
         iss,
@@ -84,6 +88,11 @@ export async function createInvoice(app: FastifyInstance) {
         throw new ClientError(
           "Issue date cannot be before the company creation date."
         )
+      }
+
+      // Check if CNAE code is valid for this company
+      if (company.cnaeCode !== cnaeCode) {
+        throw new ClientError("CNAE code is not valid for this company.")
       }
 
       const recipient = await prisma.invoiceRecipient.findUnique({
@@ -133,6 +142,7 @@ export async function createInvoice(app: FastifyInstance) {
           status,
           invoiceNumber,
           issueDate,
+          cnaeCode,
           amount,
           decuctIss,
           iss,
