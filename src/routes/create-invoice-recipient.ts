@@ -6,7 +6,6 @@ import { ClientError } from "../errors/client-error"
 import { verifyJwt } from "../middlewares/verify-jwt"
 import { dayjs } from "../lib/dayjs"
 
-// The creation of a company is linked to a member previously created in the members table.
 export async function createInvoiceRecipient(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
     "/invoice-recipients",
