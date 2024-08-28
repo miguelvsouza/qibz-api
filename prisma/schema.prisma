@@ -172,3 +172,26 @@ model Cnae {
 
   @@map("cnaes")
 }
+
+model SimpleNationalGroup {
+  id                  String    @id @default(cuid())
+  group               Int
+  validityStart       DateTime  @map("validity_start")
+  validityEnd         DateTime? @map("validity_end")
+  range               Int
+  minimumGrossRevenue Float     @map("minimum_gross_revenue")
+  maximumGrossRevenue Float     @map("maximum_gross_revenue")
+  rate                Float
+  deductionAmount     Float     @map("deduction_amount")
+  taxIrpj             Float     @map("tax_irpj")
+  taxCsll             Float     @map("tax_csll")
+  taxCofins           Float     @map("tax_cofins")
+  taxPis              Float     @map("tax_pis_pasep")
+  taxCpp              Float     @map("tax_cpp")
+  taxIcms             Float     @map("tax_icms")
+  taxIss              Float     @map("tax_iss")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+
+  @@map("simple_national_groups")
+}
