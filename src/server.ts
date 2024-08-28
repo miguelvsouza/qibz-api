@@ -16,6 +16,7 @@ import { authenticate } from "./routes/authenticate"
 import { createCompany } from "./routes/create-company"
 import { createInvoiceRecipient } from "./routes/create-invoice-recipient"
 import { createInvoice } from "./routes/create-invoice"
+import { createCnae } from "./routes/create-cnae"
 
 const app = fastify()
 
@@ -40,6 +41,7 @@ app.register(getMember)
 app.register(createCompany)
 app.register(createInvoiceRecipient)
 app.register(createInvoice)
+app.register(createCnae)
 
 app.listen({ port: env.PORT }).then(() => {
   console.log(`Server running on http://localhost:${env.PORT}/`)
