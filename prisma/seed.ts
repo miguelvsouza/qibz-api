@@ -18,6 +18,15 @@ async function seed() {
     ],
   })
 
+  await prisma.cnae.create({
+    data: {
+      code: "8630-5/03",
+      title: "Atividade médica ambulatorial restrita a consultas",
+      group: 5,
+      lc116: "04.01",
+    },
+  })
+
   // Hash the password
   const hashedPassword = await hash("john.doe")
 
@@ -53,6 +62,7 @@ async function seed() {
       name: "Acme Inc",
       document: "00.000.000/0000-00",
       creationDate: new Date("2020-08-01"),
+      cnaeCode: "8630-5/03",
       shareCapital: 10000,
       address: "123 Main St",
       number: "123",
@@ -124,6 +134,7 @@ async function seed() {
       status: "active",
       invoiceNumber: "1",
       issueDate: new Date("2024-08-01"),
+      cnaeCode: "8630-5/03",
       amount: 1000,
       decuctIss: false,
       iss: 30,
