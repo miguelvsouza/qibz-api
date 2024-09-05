@@ -33,9 +33,9 @@ model Member {
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
-  user      User               @relation(fields: [userId], references: [id])
-  cities    City               @relation(fields: [cityId], references: [id])
-  companies MembersOfCompany[]
+  user      User             @relation(fields: [userId], references: [id])
+  cities    City             @relation(fields: [cityId], references: [id])
+  companies CompanyMembers[]
   invoices  Invoice[]
 
   @@map("members")
@@ -57,10 +57,11 @@ model Company {
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   cities     City               @relation(fields: [cityId], references: [id])
-  members    MembersOfCompany[]
+  members    CompanyMembers[]
   taxRegimes CompanyTaxRegime[]
   invoices   Invoice[]
   cnae       Cnae               @relation(fields: [cnaeCode], references: [code])
+  events     CompanyEvents[]
 
   @@map("companies")
 }
@@ -79,7 +80,7 @@ model CompanyTaxRegime {
   @@map("company_tax_regimes")
 }
 
-model MembersOfCompany {
+model CompanyMembers {
   id                 String   @id @default(cuid())
   memberId           String   @map("member_id")
   companyId          String   @map("company_id")
@@ -91,7 +92,7 @@ model MembersOfCompany {
   companies Company @relation(fields: [companyId], references: [id])
   members   Member  @relation(fields: [memberId], references: [id])
 
-  @@map("members_of_companies")
+  @@map("company_members")
 }
 
 model City {
@@ -194,4 +195,29 @@ model SimpleNationalGroup {
   updatedAt           DateTime  @updatedAt @map("updated_at")
 
   @@map("simple_national_groups")
+}
+
+model Event {
+  id        String   @id @default(cuid())
+  name      String
+  type      Int // 1 - receipt | 2 - discount | 3 - information
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  companies CompanyEvents[]
+
+  @@map("events")
+}
+
+model CompanyEvents {
+  id        String   @id @default(cuid())
+  companyId String   @map("company_id")
+  eventId   String   @map("event_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  companies Company @relation(fields: [companyId], references: [id])
+  events    Event   @relation(fields: [eventId], references: [id])
+
+  @@map("company_events")
 }
