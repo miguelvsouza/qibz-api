@@ -3,7 +3,6 @@ import { ZodTypeProvider } from "fastify-type-provider-zod"
 import { z } from "zod"
 import { hash } from "../lib/bcrypt"
 import { prisma } from "../lib/prisma"
-import { mail } from "../lib/mail"
 import { ClientError } from "../errors/client-error"
 
 export async function createUser(app: FastifyInstance) {
