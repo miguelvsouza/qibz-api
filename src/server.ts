@@ -18,6 +18,8 @@ import { createInvoiceRecipient } from "./routes/create-invoice-recipient"
 import { createInvoice } from "./routes/create-invoice"
 import { createCnae } from "./routes/create-cnae"
 import { updateCnae } from "./routes/update-cnae"
+import { createEvent } from "./routes/create-event"
+import { createSimpleNationalGroup } from "./routes/create-simple-national-group"
 
 const app = fastify()
 
@@ -44,6 +46,8 @@ app.register(createInvoiceRecipient)
 app.register(createInvoice)
 app.register(createCnae)
 app.register(updateCnae)
+app.register(createSimpleNationalGroup)
+app.register(createEvent)
 
 app.listen({ port: env.PORT }).then(() => {
   console.log(`Server running on http://localhost:${env.PORT}/`)
