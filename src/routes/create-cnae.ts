@@ -14,14 +14,17 @@ export async function createCnae(app: FastifyInstance) {
           code: z.string().regex(/^\d{4}-\d{1}\/\d{2}$/, {
             message: "Invalid CNAE format. Must be in format 0000-0/00.",
           }),
-          title: z.string(),
+          title: z.string().min(7, {
+            message:
+              "Invalid title. It must not be at least 7 characters long.",
+          }),
           lc116: z
             .string()
             .regex(/^\d{2}.\d{2}$/, {
               message: "Invalid LC116 format. Must be in format 00.00.",
             })
             .optional(),
-          group: z.number().min(1).max(5).optional(),
+          group: z.number().int().min(1).max(5).optional(),
         }),
       },
       onRequest: [verifyJwt],

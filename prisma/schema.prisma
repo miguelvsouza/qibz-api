@@ -51,7 +51,7 @@ model Company {
   number       String
   complement   String
   district     String
-  cnaeCode     String   @map("cnae_id")
+  cnaeId       String   @map("cnae_id")
   cityId       Int      @map("city_id")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
@@ -60,7 +60,7 @@ model Company {
   members    CompanyMembers[]
   taxRegimes CompanyTaxRegime[]
   invoices   Invoice[]
-  cnae       Cnae               @relation(fields: [cnaeCode], references: [code])
+  cnae       Cnae               @relation(fields: [cnaeId], references: [id])
   events     CompanyEvents[]
 
   @@map("companies")

@@ -20,6 +20,7 @@ async function seed() {
 
   await prisma.cnae.create({
     data: {
+      id: "cm0zok6ow000008m7huog3s57",
       code: "8630-5/03",
       title: "Atividade médica ambulatorial restrita a consultas",
       group: 5,
@@ -62,7 +63,7 @@ async function seed() {
       name: "Acme Inc",
       document: "00.000.000/0000-00",
       creationDate: new Date("2020-08-01"),
-      cnaeCode: "8630-5/03",
+      cnaeId: "cm0zok6ow000008m7huog3s57", // Use the cnae created above (Atividade médica ambulatorial restrita a consultas)
       shareCapital: 10000,
       address: "123 Main St",
       number: "123",
@@ -73,7 +74,7 @@ async function seed() {
   })
 
   // Create a relationship between the member and the company
-  await prisma.membersOfCompany.create({
+  await prisma.companyMembers.create({
     data: {
       memberId: "cm00cr2d3000208ld5rlgammh",
       companyId: "cm00cnpx2000108ldevfv2khy",
