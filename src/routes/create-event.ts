@@ -11,7 +11,7 @@ export async function createEvent(app: FastifyInstance) {
       schema: {
         body: z.object({
           name: z.string(),
-          type: z.number().min(1).max(3), // 1 - receipt | 2 - discount | 3 - information
+          type: z.number().int().min(1).max(3), // 1 - receipt | 2 - discount | 3 - information
         }),
       },
       onRequest: [verifyJwt],
