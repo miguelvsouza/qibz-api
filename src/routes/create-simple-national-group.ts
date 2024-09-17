@@ -14,9 +14,9 @@ export async function createSimpleNationalGroup(app: FastifyInstance) {
         body: z.object({
           simpleNationalGroups: z.array(
             z.object({
-              group: z.number().min(1).max(5),
+              group: z.number().int().min(1).max(5),
               validityStart: z.coerce.date(),
-              range: z.number().min(1).max(6),
+              range: z.number().int().min(1).max(6),
               minimumGrossRevenue: z.number().positive(),
               maximumGrossRevenue: z.number().positive(),
               rate: z.number().min(0).max(1),

@@ -135,7 +135,7 @@ async function seed() {
       status: "active",
       invoiceNumber: "1",
       issueDate: new Date("2024-08-01"),
-      cnaeCode: "8630-5/03",
+      cnaeId: "cm0zok6ow000008m7huog3s57",
       amount: 1000,
       decuctIss: false,
       iss: 30,

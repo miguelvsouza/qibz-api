@@ -139,7 +139,7 @@ model Invoice {
   status        String
   invoiceNumber String   @map("invoice_number")
   issueDate     DateTime @map("issue_date")
-  cnaeCode      String   @map("cnae_id")
+  cnaeId        String   @map("cnae_id")
   amount        Float
   decuctIss     Boolean  @map("deduct_iss")
   iss           Float
@@ -154,7 +154,7 @@ model Invoice {
   company   Company          @relation(fields: [companyId], references: [id])
   member    Member           @relation(fields: [memberId], references: [id])
   recipient InvoiceRecipient @relation(fields: [recipientId], references: [id])
-  cnae      Cnae             @relation(fields: [cnaeCode], references: [code])
+  cnae      Cnae             @relation(fields: [cnaeId], references: [id])
 
   @@map("invoices")
 }
