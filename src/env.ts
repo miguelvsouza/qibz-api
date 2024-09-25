@@ -5,6 +5,10 @@ const envSchema = z.object({
   PORT: z.coerce.number(),
   JWT_SECRET: z.string(),
   SENDGRID_API_KEY: z.string(),
+  INTEGRA_CONTADOR_CONSUMER_KEY: z.string(),
+  INTEGRA_CONTADOR_CONSUMER_SECRET: z.string(),
+  CERT_PATH: z.string().url(),
+  CERT_PASS: z.string(),
 })
 
 const _env = envSchema.safeParse(process.env)

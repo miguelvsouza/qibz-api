@@ -4,6 +4,7 @@ import { ClientError } from "./errors/client-error"
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library"
 import { UnauthorizedError } from "./errors/unauthorized-error"
 import { ResponseError } from "@sendgrid/helpers/classes"
+import { IntegraContadorError } from "./errors/integra-contador-error"
 
 type FastifyErrorHandler = FastifyInstance["errorHandler"]
 
@@ -36,6 +37,13 @@ export const errorHandler: FastifyErrorHandler = (error, _, reply) => {
     return reply.status(500).send({
       message: error.message,
       response: error.response.body,
+    })
+  }
+
+  // Handle Integra Contador errors
+  if (error instanceof IntegraContadorError) {
+    return reply.status(error.statusCode).send({
+      message: error.message,
     })
   }
 
