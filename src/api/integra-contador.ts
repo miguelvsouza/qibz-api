@@ -79,12 +79,3 @@ class IntegraContador {
 }
 
 export const integraContador = new IntegraContador()
-
-integraContador
-  .authenticate()
-  .then(() => {
-    console.log("Success")
-  })
-  .catch((e) => {
-    console.log(e.statusCode, e.message)
-  })
