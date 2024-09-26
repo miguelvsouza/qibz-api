@@ -5,6 +5,9 @@ const envSchema = z.object({
   PORT: z.coerce.number(),
   JWT_SECRET: z.string(),
   SENDGRID_API_KEY: z.string(),
+  CNPJ_INTEGRA_CONTADOR: z
+    .string()
+    .length(14, { message: "CNPJ must be 14 characters." }),
   INTEGRA_CONTADOR_CONSUMER_KEY: z.string(),
   INTEGRA_CONTADOR_CONSUMER_SECRET: z.string(),
   CERT_PATH: z.string().url(),
