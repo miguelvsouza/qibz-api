@@ -1,9 +1,8 @@
-import axios, { Axios, AxiosError } from "axios"
+import axios from "axios"
 import fs from "node:fs"
 import https from "node:https"
 import { env } from "../env"
-import { IntegraContadorError } from "../errors/integra-contador-error"
-import { z, ZodError } from "zod"
+import { z } from "zod"
 
 interface AuthenticateResponse {
   expires_in: number
