@@ -105,117 +105,87 @@ class IntegraContador {
   }
 
   async authenticate() {
-    try {
-      const { data: authenticateResponse } =
-        await axios.post<AuthenticateResponse>(
-          this.endpoints.authenticate_url,
-          {},
-          {
-            headers: {
-              Authorization: `Basic ${this.credentials}`,
-              "Content-Type": "application/x-www-form-urlencoded",
-              "Role-Type": "TERCEIROS",
-            },
-            httpsAgent: this.httpsAgent,
-          }
-        )
+    const { data: authenticateResponse } =
+      await axios.post<AuthenticateResponse>(
+        this.endpoints.authenticate_url,
+        {},
+        {
+          headers: {
+            Authorization: `Basic ${this.credentials}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Role-Type": "TERCEIROS",
+          },
+          httpsAgent: this.httpsAgent,
+        }
+      )
 
-      const {
-        expires_in,
-        access_token,
-        jwt_token,
-        token_type,
-        scope,
-        jwt_pucomex,
-      } = authenticateResponse
+    const {
+      expires_in,
+      access_token,
+      jwt_token,
+      token_type,
+      scope,
+      jwt_pucomex,
+    } = authenticateResponse
 
-      this.config.expires_in = expires_in
-      this.config.scope = scope
-      this.config.token_type = token_type
-      this.config.access_token = access_token
-      this.config.jwt_token = jwt_token
-      this.config.jwt_pucomex = jwt_pucomex
-    } catch (error: any) {
-      if (error instanceof AxiosError) {
-        throw new IntegraContadorError({
-          statusCode: error.status ?? 401,
-          message: "Integra Contador authentication error.",
-        })
-      }
-    }
+    this.config.expires_in = expires_in
+    this.config.scope = scope
+    this.config.token_type = token_type
+    this.config.access_token = access_token
+    this.config.jwt_token = jwt_token
+    this.config.jwt_pucomex = jwt_pucomex
   }
 
   async generateDas(params: GenerateDasParams) {
-    try {
-      const { cnpj, periodoApuracao } = generateDasParamsSchema.parse(params)
+    const { cnpj, periodoApuracao } = generateDasParamsSchema.parse(params)
 
-      const stringData = JSON.stringify({
-        periodoApuracao,
-      })
+    const stringData = JSON.stringify({
+      periodoApuracao,
+    })
 
-      const payload = {
-        contratante: {
-          numero: env.CNPJ_INTEGRA_CONTADOR,
-          tipo: 2,
-        },
-        autorPedidoDados: {
-          numero: env.CNPJ_INTEGRA_CONTADOR,
-          tipo: 2,
-        },
-        contribuinte: {
-          numero: cnpj,
-          tipo: 2,
-        },
-        pedidoDados: {
-          idSistema: "PGDASD",
-          idServico: "GERARDAS12",
-          versaoSistema: "1.0",
-          dados: stringData,
-        },
-      }
-
-      // When this server is not authenticated or the token is not valid, execute authenticate method.
-      if (this.config.expires_in <= 0) {
-        await this.authenticate()
-      }
-
-      const { data: generateDasResponse } =
-        await axios.post<GenerateDasResponse>(
-          this.endpoints.emitir_url,
-          payload,
-          {
-            headers: {
-              Authorization: `${this.config.token_type} ${this.config.access_token}`,
-              jwt_token: this.config.jwt_token,
-              "Content-Type": "application/json",
-              "Role-Type": "TERCEIROS",
-            },
-            httpsAgent: this.httpsAgent,
-          }
-        )
-
-      const [dasData]: generateDasData = JSON.parse(generateDasResponse.dados)
-
-      return { pdfInBase64: dasData.pdf, details: dasData.detalhamentoDas }
-    } catch (error: any) {
-      // Handle Axios errors
-      if (error instanceof AxiosError) {
-        throw new IntegraContadorError({
-          statusCode: error.status ?? 401,
-          message: "Error during generate DAS.",
-        })
-      }
-
-      // Handle params validate errors
-      if (error instanceof ZodError) {
-        return {
-          message: "Invalid params to generate DAS method.",
-          errors: error.flatten().fieldErrors,
-        }
-      }
-
-      return { error }
+    const payload = {
+      contratante: {
+        numero: env.CNPJ_INTEGRA_CONTADOR,
+        tipo: 2,
+      },
+      autorPedidoDados: {
+        numero: env.CNPJ_INTEGRA_CONTADOR,
+        tipo: 2,
+      },
+      contribuinte: {
+        numero: cnpj,
+        tipo: 2,
+      },
+      pedidoDados: {
+        idSistema: "PGDASD",
+        idServico: "GERARDAS12",
+        versaoSistema: "1.0",
+        dados: stringData,
+      },
     }
+
+    // When this server is not authenticated or the token is not valid, execute authenticate method.
+    if (this.config.expires_in <= 0) {
+      await this.authenticate()
+    }
+
+    const { data: generateDasResponse } = await axios.post<GenerateDasResponse>(
+      this.endpoints.emitir_url,
+      payload,
+      {
+        headers: {
+          Authorization: `${this.config.token_type} ${this.config.access_token}`,
+          jwt_token: this.config.jwt_token,
+          "Content-Type": "application/json",
+          "Role-Type": "TERCEIROS",
+        },
+        httpsAgent: this.httpsAgent,
+      }
+    )
+
+    const [dasData]: generateDasData = JSON.parse(generateDasResponse.dados)
+
+    return { pdfInBase64: dasData.pdf, details: dasData.detalhamentoDas }
   }
 }
 
