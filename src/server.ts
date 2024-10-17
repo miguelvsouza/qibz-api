@@ -3,6 +3,8 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from "fastify-type-provider-zod"
+import fastifyCors from "@fastify/cors"
+import fastifyCookie from "@fastify/cookie"
 import fastifyJwt from "@fastify/jwt"
 import { env } from "./env"
 import { errorHandler } from "./error-handler"
@@ -20,11 +22,25 @@ import { createCnae } from "./routes/create-cnae"
 import { updateCnae } from "./routes/update-cnae"
 import { createEvent } from "./routes/create-event"
 import { createSimpleNationalGroup } from "./routes/create-simple-national-group"
+import { signOut } from "./routes/sign-out"
 
 const app = fastify()
 
+app.register(fastifyCors, {
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
+  credentials: true, // Importante para permitir cookies/autenticação
+})
+
+app.register(fastifyCookie)
+
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
+  cookie: {
+    cookieName: "auth",
+    signed: false,
+  },
 })
 
 // Set the error handler, validator compiler, and serializer compiler
@@ -36,6 +52,7 @@ app.setSerializerCompiler(serializerCompiler)
 /// Public routes
 app.register(createUser)
 app.register(authenticate)
+app.register(signOut)
 
 /// Private routes
 app.register(profile)

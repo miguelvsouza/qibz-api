@@ -47,7 +47,15 @@ export async function authenticate(app: FastifyInstance) {
         }
       )
 
-      return reply.status(200).send({ token })
+      return reply
+        .setCookie("auth", token, {
+          httpOnly: true,
+          path: "/",
+          maxAge: 7 * 86400,
+        })
+        .send()
+
+      // return reply.status(200).send({ token })
     }
   )
 }
