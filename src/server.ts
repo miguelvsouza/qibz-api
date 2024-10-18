@@ -23,6 +23,7 @@ import { updateCnae } from "./routes/update-cnae"
 import { createEvent } from "./routes/create-event"
 import { createSimpleNationalGroup } from "./routes/create-simple-national-group"
 import { signOut } from "./routes/sign-out"
+import { updatePassword } from "./routes/update-password"
 
 const app = fastify()
 
@@ -56,6 +57,7 @@ app.register(signOut)
 
 /// Private routes
 app.register(profile)
+app.register(updatePassword)
 app.register(createMember)
 app.register(getMember)
 app.register(createCompany)
