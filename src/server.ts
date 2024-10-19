@@ -24,6 +24,7 @@ import { createEvent } from "./routes/create-event"
 import { createSimpleNationalGroup } from "./routes/create-simple-national-group"
 import { signOut } from "./routes/sign-out"
 import { updatePassword } from "./routes/update-password"
+import { getCompanies } from "./routes/get-companies"
 
 const app = fastify()
 
@@ -67,6 +68,7 @@ app.register(createCnae)
 app.register(updateCnae)
 app.register(createSimpleNationalGroup)
 app.register(createEvent)
+app.register(getCompanies)
 
 app.listen({ port: env.PORT }).then(() => {
   console.log(`Server running on http://localhost:${env.PORT}/`)
